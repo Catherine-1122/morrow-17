@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdtemp,rm} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
+import {createApp} from '../server.mjs';
+const start=async dir=>{const srv=await createApp({stateDir:dir});await new Promise(ok=>srv.listen(0,'127.0.0.1',ok));return {srv,base:'http://127.0.0.1:'+srv.address().port};};
+const stop=srv=>new Promise(done=>srv.close(done));
+test('a clean install serves the app and public assets, persists a saved selection across restart and rejects unsafe requests',async t=>{
+  const dir=await mkdtemp(join(tmpdir(),'atlas-test-'));let {srv,base}=await start(dir);
+  t.after(async()=>{await stop(srv);await rm(dir,{recursive:true,force:true});});
+  const post=(path,value,origin=base)=>fetch(base+path,{method:'POST',headers:{Origin:origin,'Content-Type':'application/json'},body:JSON.stringify(value)});
+  assert.match(await (await fetch(base+'/')).text(),/Map Your World/);
+  const places=await (await fetch(base+'/places.json')).json();assert.equal(places.length,3);
+  for(const p of places)assert.equal((await fetch(base+p.image)).status,200);
+  for(const path of ['/.env','/.git/config','/.atlas/saved.sqlite','/server.mjs','/api/admin','/api/illustrations'])assert.equal((await fetch(base+path)).status,404);
+  const q=await post('/api/search',{question:'wind',mode:'sample'});assert.deepEqual((await q.json()).matches,[{id:'finland'}]);
+  assert.equal((await post('/api/search',{question:'wind',mode:'live'})).status,503);
+  assert.equal((await post('/api/saved',{id:'finland',saved:true},'https://example.org')).status,403);
+  assert.equal((await post('/api/saved',{id:'invented',saved:true})).status,400);
+  for(let i=0;i<2;i++)assert.deepEqual((await (await post('/api/saved',{id:'finland',saved:true})).json()).saved,['finland']);
+  await stop(srv);({srv,base}=await start(dir));assert.deepEqual(await (await fetch(base+'/api/state')).json(),{saved:['finland'],liveAvailable:false});
+});

@@ -1,0 +1,12 @@
+{
+  "question": "What can I see at the Finnish Pavilion in the Giardini?",
+  "mode": "live",
+  "model": "muse-spark-1.3",
+  "matches": [
+    {
+      "id": "finland",
+      "reason": "See *Aeolian Suite*, a multisensory windscape of sound, movement and wind recordings with kinetic sculptures.",
+      "source": "https://www.labiennale.org/en/art/2026/finland"
+    }
+  ]
+}

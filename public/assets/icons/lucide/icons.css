@@ -1,0 +1,17 @@
+/* Lucide 0.460.0. Shared decorative icons; accessible names belong to controls. */
+.ui-icon{display:inline-block;flex:none;width:20px;height:20px;vertical-align:-.2em;background:currentColor;-webkit-mask:var(--ui-icon) center/contain no-repeat;mask:var(--ui-icon) center/contain no-repeat;pointer-events:none}
+button.icon-button:not([hidden]),a.icon-link{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+summary{list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"";display:inline-block;width:16px;height:16px;margin-right:6px;vertical-align:-.2em;background:currentColor;-webkit-mask:url("./chevron-right.svg") center/contain no-repeat;mask:url("./chevron-right.svg") center/contain no-repeat}
+details[open]>summary::before{transform:rotate(90deg)}
+.icon-arrow-left{--ui-icon:url("./arrow-left.svg")}
+.icon-arrow-right{--ui-icon:url("./arrow-right.svg")}
+.icon-bookmark{--ui-icon:url("./bookmark.svg")}
+.icon-chevron-right{--ui-icon:url("./chevron-right.svg")}
+.icon-compass{--ui-icon:url("./compass.svg")}
+.icon-map{--ui-icon:url("./map.svg")}
+.icon-plus{--ui-icon:url("./plus.svg")}
+.icon-search{--ui-icon:url("./search.svg")}
+.icon-x{--ui-icon:url("./x.svg")}
+.icon-bookmark-check{--ui-icon:url("./bookmark-check.svg")}

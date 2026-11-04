@@ -1,0 +1,91 @@
+[
+  {
+    "id": "arsenale",
+    "name": "Arsenale",
+    "area": "Castello",
+    "city": "Venice",
+    "description": "The Arsenale is one of the two principal sites of the International Art Exhibition. The drawing shows its historic gate.",
+    "tags": [
+      "architecture",
+      "exhibition",
+      "gate",
+      "shipyard"
+    ],
+    "source": "https://www.labiennale.org/en/art/2026/61st-exhibition",
+    "coordinates": [
+      12.353975772857666,
+      45.43334939237977
+    ],
+    "point": {
+      "x": 1094.7324130999248,
+      "y": 117.73104845809937
+    },
+    "image": "/assets/art/arsenale.webp",
+    "credit": {
+      "text": "Pencil-style adaptation of a photograph by Armin Kleiner. Changed medium, palette and composition; some incidental objects omitted. Retain attribution and source link. Adaptation supplied under the same ShareAlike license. Reduced for display.",
+      "source": "https://commons.wikimedia.org/wiki/File:Venice%2C_Castello%2C_Arsenale%2C_main_gate_09.jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    }
+  },
+  {
+    "id": "finland",
+    "name": "Finnish Pavilion",
+    "area": "Giardini",
+    "city": "Venice",
+    "description": "The Finnish Pavilion is in the Giardini. Its 2026 exhibition is Aeolian Suite.",
+    "tags": [
+      "sound",
+      "architecture",
+      "pavilion",
+      "wind",
+      "aalto"
+    ],
+    "source": "https://www.labiennale.org/en/art/2026/finland",
+    "coordinates": [
+      12.3585181,
+      45.4292579
+    ],
+    "point": {
+      "x": 1244.3550731786092,
+      "y": 309.778994251887
+    },
+    "image": "/assets/art/finland.webp",
+    "credit": {
+      "text": "Pencil-style adaptation of a photograph by Yagmurkozmik. Changed medium, palette and composition; some incidental objects omitted. Retain attribution and source link. Adaptation supplied under the same ShareAlike license. Reduced for display.",
+      "source": "https://commons.wikimedia.org/wiki/File:The_Finnish_Pavilion%2C_Biennale_di_Venezia.jpg",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    }
+  },
+  {
+    "id": "olivetti",
+    "name": "Negozio Olivetti",
+    "area": "San Marco",
+    "city": "Venice",
+    "description": "The Olivetti showroom on Piazza San Marco hosts Hybrids, a collateral event in the 2026 programme.",
+    "tags": [
+      "design",
+      "architecture",
+      "showroom",
+      "typewriter",
+      "scarpa"
+    ],
+    "source": "https://www.labiennale.org/en/art/2026/collateral-events/hybrids-leandro-erlich-al-negozio-olivetti",
+    "coordinates": [
+      12.3375316,
+      45.4341532
+    ],
+    "point": {
+      "x": 553.0671369832356,
+      "y": 80
+    },
+    "image": "/assets/art/olivetti.webp",
+    "credit": {
+      "text": "Pencil-style adaptation of a photograph by Kent Wang. Changed medium, palette and composition; some incidental objects omitted. Retain attribution and source link. Adaptation supplied under the same ShareAlike license. Reduced for display.",
+      "source": "https://commons.wikimedia.org/wiki/File:Venice_%2850444227071%29.jpg",
+      "license": "CC BY-SA 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.0/"
+    }
+  }
+]
