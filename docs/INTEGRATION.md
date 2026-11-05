@@ -30,7 +30,7 @@ All routes above refer to the Meta API host `https://api.meta.ai`. The live adap
 - `npm test` runs deterministic fixtures and starts a real loopback server on an ephemeral port. It checks that known art loads, invalid IDs and foreign origins are rejected, saves are idempotent and a second server process lifecycle against the same database retains the place.
 - `npm run artwork:check` verifies that every bundled illustration has a Meta generation record whose published-file hash matches the actual asset. This detects missing records and stale or substituted assets; it is not independent provider attestation.
 - `npm run meta:check` sends one billable live text request. It exits unsuccessfully for missing credentials, model failure, empty results or insufficient source evidence. A tested output is bundled solely as evidence; it is never replayed by Live Meta.
-- The [walkthrough](walkthrough.mp4) and [Explore screenshot](explore.webp) were recaptured on Nov 5 from the corrected sample app. The walkthrough shows Sample search, the place sheet, saving, reopening the collection, and the digital guide and map. It makes no live model call.
+- The [walkthrough preview and MP4 download](WALKTHROUGH.md) and [Explore screenshot](explore.webp) were recaptured on Nov 5 from the corrected sample app. The walkthrough shows Sample search, the place sheet, saving, reopening the collection, and the digital guide and map. It makes no live model call. The animated GIF is an encoding of the same recording for playback on GitHub.
 - To start with another empty collection, use another checkout. All state for the current installation lives beneath `.atlas/`, outside the files served to browsers.
 
 ## Boundary for judges

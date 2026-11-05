@@ -5,9 +5,11 @@
 
 A traveller asks what to see at the Finnish Pavilion. Atlas can research the question with Meta, show the source beside the place, and let the traveller decide whether to save it. The saved venue becomes a page and a pin in their pocket guide.
 
-![The Atlas Explore board with three illustrated Venice venues](docs/explore.webp)
+[![Animated Atlas walkthrough: search, save, and open the Venice pocket guide](docs/walkthrough.gif)](docs/WALKTHROUGH.md)
 
-Travel planning often leaves the map pin in one app, the source in a search tab and the itinerary in someone’s notes. Atlas keeps those pieces together. This submission is a self-contained slice of the hackathon prototype built around three venues in Venice. [Watch the sample walkthrough](docs/walkthrough.mp4) · [Artwork and map credits](docs/CREDITS.md)
+14-second silent preview in Sample mode. [Download the full-size MP4](https://github.com/Catherine-1122/morrow-17/raw/refs/heads/main/docs/walkthrough.mp4) · [Still screenshot](docs/explore.webp)
+
+Travel planning often leaves the map pin in one app, the source in a search tab and the itinerary in someone’s notes. Atlas keeps those pieces together. This submission is a self-contained slice of the hackathon prototype built around three venues in Venice. [Watch the sample walkthrough](docs/WALKTHROUGH.md) · [Artwork and map credits](docs/CREDITS.md)
 
 ## Run the demo
 
