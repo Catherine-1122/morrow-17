@@ -4,5 +4,5 @@
   "private": true,
   "type": "module",
   "engines": {"node": ">=24"},
-  "scripts": {"start": "node --env-file-if-exists=.env server.mjs", "dev": "npm start", "test": "node --test test/*.test.mjs", "meta:check": "node --env-file-if-exists=.env scripts/live-check.mjs"}
+  "scripts": {"start": "node --env-file-if-exists=.env server.mjs", "dev": "npm start", "test": "node --test test/*.test.mjs", "meta:check": "node --env-file-if-exists=.env scripts/live-check.mjs", "artwork:check": "node scripts/check-artwork.mjs"}
 }

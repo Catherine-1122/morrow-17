@@ -1,6 +1,8 @@
 # Atlas by Hado Labs
 **Map Your World.** · Meta Global AI Developer Hackathon · Startup Track · Build for Your World · November 4, 2026
 
+**Integration clarification · November 5, 2026.** Atlas uses Meta Muse Spark for live research and Meta Muse Image in the full prototype's illustration workflow. The original demo export included artwork from a separate generation workflow. This post-submission correction replaces all three bundled illustrations with verified Meta Muse Image outputs and refreshes the demo media. [Correction and generation evidence](docs/ARTWORK-CORRECTION.md).
+
 A traveller asks what to see at the Finnish Pavilion. Atlas can research the question with Meta, show the source beside the place, and let the traveller decide whether to save it. The saved venue becomes a page and a pin in their pocket guide.
 
 ![The Atlas Explore board with three illustrated Venice venues](docs/explore.webp)
@@ -54,7 +56,7 @@ Meta interprets the live question, chooses relevant candidates, researches the l
 | --- | --- | --- |
 | Explorer | Discover places, save research, collect stops on a map and build a personal guide. | The complete three-venue search, save and digital guide journey. |
 | Place owner | Submit better listing information for review. Claim verification is a product goal. | Consumer-facing place information and official links. The owner workspace is private. |
-| Platform editor | Review research, writing, illustration provenance and publication decisions. | Approved illustrations with public credits. The editorial workspace is private. |
+| Platform editor | Review research, writing, illustration provenance and publication decisions. | Meta-generated illustrations with public credits and generation records. The editorial workspace is private. |
 
 ## What was built
 
@@ -64,7 +66,7 @@ For this release we selected three venues, wrote short sample descriptions from 
 
 **Stack** · Node HTTP and built-in SQLite, browser ES modules, HTML and CSS, Hanken Grotesk, Lucide, a locally rendered Venice map and the Meta Responses API.
 
-**Verification** · Run `npm test` for independent, credential-free tests of startup, sample loading, genuine save/restart behavior, request validation and simulated provider failures. The live check above is opt-in. [Scope and test evidence](docs/INTEGRATION.md)
+**Verification** · Run `npm test` for independent, credential-free tests of startup, sample loading, genuine save/restart behavior, request validation and simulated provider failures. Run `npm run artwork:check` to match the shipped artwork to its recorded hashes and Meta attribution. The live check above is opt-in. [Scope and test evidence](docs/INTEGRATION.md)
 
 **Current limits** · Discovery covers three mapped venues. Guide order follows save order; route optimization, offline downloads and printed orders are future work. The digital preview is interactive. Browser visitors to the same installation share its sample saves. The app binds to loopback for local judging; a public hosted instance requires a separately reviewed deployment.
 

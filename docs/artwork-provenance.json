@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "correction_date": "2026-11-05",
+  "scope": "Current three bundled Venice illustrations. Post-submission replacement; does not describe the original submission assets.",
+  "evidence_note": "Recorded from completed Meta API calls and local file hashes. This is a project-maintained provenance record, not a provider-signed attestation. No earlier generated artwork was supplied as an input.",
+  "assets": [
+    {
+      "place_id": "arsenale",
+      "provider": "meta",
+      "model": "muse-image-1.0",
+      "api_host": "https://api.meta.ai",
+      "endpoint": "/v1/images/edits",
+      "generated_at": "2026-11-05T21:03:13.961Z",
+      "provider_created": 1793912593,
+      "requested_size": "1024x1024",
+      "returned_size": [
+        1600,
+        1600
+      ],
+      "original_output_sha256": "52719979c5f3eb3d158cbdde6444d9f635869cc99aaae8a91cb857d1650522b7",
+      "reference": {
+        "source_url": "https://commons.wikimedia.org/wiki/File:Venice%2C_Castello%2C_Arsenale%2C_main_gate_09.jpg",
+        "sha256": "63131c3f5763255cdb63d089d529fa7fadea683156f9fc4e81a2d540b89e02ca",
+        "license": "CC BY-SA 4.0"
+      },
+      "published_asset": {
+        "path": "public/assets/art/arsenale.webp",
+        "sha256": "f3087cc7a6085b66f19d0fad37546d1762d5145d8041fb1d5c62ce52a742369a",
+        "dimensions": [
+          960,
+          960
+        ],
+        "conversion": "Resized and encoded as WebP; no further generative edits."
+      }
+    },
+    {
+      "place_id": "finland",
+      "provider": "meta",
+      "model": "muse-image-1.0",
+      "api_host": "https://api.meta.ai",
+      "endpoint": "/v1/images/edits",
+      "generated_at": "2026-11-05T21:03:25.824Z",
+      "provider_created": 1793912605,
+      "requested_size": "1024x1024",
+      "returned_size": [
+        1600,
+        1600
+      ],
+      "original_output_sha256": "9bf22e72e15a5c18404a56e15e256ffbb996b34d3ecf939a413e7af3a7cf637b",
+      "reference": {
+        "source_url": "https://commons.wikimedia.org/wiki/File:The_Finnish_Pavilion%2C_Biennale_di_Venezia.jpg",
+        "sha256": "4333e3cbbba3f36eada74c5cc8463dd9472c12169c19e9c103aeacee3ed9fa3e",
+        "license": "CC BY-SA 4.0"
+      },
+      "published_asset": {
+        "path": "public/assets/art/finland.webp",
+        "sha256": "1964bbf529f92c5ec93b142a2996f54a1c0c716e263c196a2c4edb2c0b789e78",
+        "dimensions": [
+          960,
+          960
+        ],
+        "conversion": "Resized and encoded as WebP; no further generative edits."
+      }
+    },
+    {
+      "place_id": "olivetti",
+      "provider": "meta",
+      "model": "muse-image-1.0",
+      "api_host": "https://api.meta.ai",
+      "endpoint": "/v1/images/edits",
+      "generated_at": "2026-11-05T21:03:37.646Z",
+      "provider_created": 1793912617,
+      "requested_size": "1024x1024",
+      "returned_size": [
+        1600,
+        1600
+      ],
+      "original_output_sha256": "42d688809f66cc8285d366e703a25166f5733f852d1683ea7f46aeef8ba94c0e",
+      "reference": {
+        "source_url": "https://commons.wikimedia.org/wiki/File:Venice_%2850444227071%29.jpg",
+        "sha256": "a4900beacc2e9b093c802b93651072d4644b16116b38de9f12521650b712edc3",
+        "license": "CC BY-SA 2.0"
+      },
+      "published_asset": {
+        "path": "public/assets/art/olivetti.webp",
+        "sha256": "98ab892d434dbbebbb5743f6491b6c3d23f3ec3760a36fed6b1428f283f923b0",
+        "dimensions": [
+          960,
+          960
+        ],
+        "conversion": "Resized and encoded as WebP; no further generative edits."
+      }
+    }
+  ]
+}
