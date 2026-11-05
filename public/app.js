@@ -1,6 +1,7 @@
 import {icon} from './icons.js';
 import {placeVisual,appendIllustrationCredit} from './place-visual.js';
 import {mountPassportGuide,savedPlaceGuide} from './assets/guides/passport-guide.js';
+import {mountProfile,restoreMotionPreference} from './profile.js';
 
 const $ = selector => document.querySelector(selector);
 const el = (tag, text, cls) => {
@@ -22,8 +23,8 @@ async function api(path, data) {
   return result;
 }
 
-const pages = {explore:'Explore',search:'Search',saved:'Saved',book:'Book'};
-const navigationIcons = {explore:'compass',search:'search',saved:'bookmark',book:'book'};
+const pages = {explore:'Explore',search:'Search',saved:'Saved',book:'Book',profile:'Profile'};
+const navigationIcons = {explore:'compass',search:'search',saved:'bookmark',book:'book',profile:'circle-user'};
 let places = [], byId = new Map(), saved = [], liveAvailable = false;
 let reader, requestNumber = 0, question = 'Architecture in Venice', mode = 'sample', lastSearch;
 const current = () => Object.hasOwn(pages,location.hash.slice(1)) ? location.hash.slice(1) : 'explore';
@@ -85,20 +86,23 @@ function searchView(host) {
   }
   choice.value=mode;modeLabel.append(choice);
   const run=el('button','Search places','primary');run.type='submit';form.append(label,modeLabel,run);
-  const results=el('div');host.replaceChildren(form,results);
+  const results=el('section',null,'search-results');results.setAttribute('aria-label','Search results');host.replaceChildren(form,results);
   const display = response => {
-    status((response.mode==='live'?'Live Meta research':'Sample search')+' · '+response.matches.length+' results');
+    status((response.mode==='live'?'Live Meta research':'Sample search')+' · '+response.matches.length+(response.matches.length===1?' result':' results'));
     showBoard(response.matches.map(m=>byId.get(m.id)),results,response.matches);
   };
   if (lastSearch) display(lastSearch);
   form.addEventListener('submit',async e=>{
-    e.preventDefault();question=input.value.trim();mode=choice.value;run.disabled=true;
-    lastSearch=null;results.replaceChildren();status(mode==='live'?'Muse is researching the official listings…':'Searching the sample…');
+    e.preventDefault();question=input.value.trim();mode=choice.value;run.disabled=true;input.disabled=true;choice.disabled=true;
+    lastSearch=null;results.replaceChildren();results.setAttribute('aria-busy','true');
+    const progress=el('div',null,'search-progress');progress.setAttribute('role','status');
+    progress.append(el('span',null,'search-spinner'),el('p',mode==='live'?'Muse is researching the official listings…':'Searching the sample…'));
+    results.append(progress);status('');
     try {
       const result=await api('/api/search',{question,mode});
       if(form.isConnected){lastSearch=result;display(result);}
-    } catch(error){if(form.isConnected)status(error.message);}
-    finally{run.disabled=false;}
+    } catch(error){if(form.isConnected){results.replaceChildren();status(error.message);}}
+    finally{run.disabled=false;input.disabled=false;choice.disabled=false;results.setAttribute('aria-busy','false');}
   });
 }
 function bookView(host) {
@@ -117,20 +121,23 @@ async function render() {
   const version=++requestNumber, page=current(), host=$('#content');
   reader?.destroy();reader=null;host.replaceChildren();status('');
   $('h1').textContent=pages[page];
-  $('#context').textContent=({explore:'Venice Biennale · 3 illustrated places',search:'Searching in Venice, Italy',saved:'Places saved on this demo server',book:'Venice Biennale · Your pocket guide'})[page];
-  for(const a of $('nav').children) if(a.hash==='#'+page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
+  $('#context').textContent=({explore:'Venice Biennale · 3 illustrated places',search:'Searching in Venice, Italy',saved:'Places saved on this demo server',book:'Venice Biennale · Your pocket guide',profile:'Your world, your way.'})[page];
+  for(const a of document.querySelectorAll('[data-section]')) if(a.hash==='#'+page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
   try {
     const state=await api('/api/state');if(version!==requestNumber)return;
     saved=state.saved;liveAvailable=state.liveAvailable;
     if(page==='explore')showBoard(places,host);
     else if(page==='saved')showBoard(saved.map(id=>byId.get(id)),host);
     else if(page==='book')bookView(host);
+    else if(page==='profile')mountProfile(host,places);
     else searchView(host);
   }catch(error){if(version===requestNumber)status(error.message);}
 }
 for(const [id,label] of Object.entries(pages)) {
-  const a=el('a');a.href='#'+id;a.append(icon(navigationIcons[id]),document.createTextNode(label));$('nav').append(a);
+  const a=el('a');a.href='#'+id;a.dataset.section=id;a.append(icon(navigationIcons[id]),document.createTextNode(label));
+  if(id==='profile'){a.className='profile-link';$('.top').append(a);}else $('nav').append(a);
 }
+restoreMotionPreference();
 $('#close').addEventListener('click',()=>$('#detail').close());
 try {places=await api('/places.json');byId=new Map(places.map(p=>[p.id,p]));await render();window.addEventListener('hashchange',render);}
 catch(error){status('Could not load the sample. '+error.message);}

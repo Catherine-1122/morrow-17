@@ -15,3 +15,5 @@ details[open]>summary::before{transform:rotate(90deg)}
 .icon-search{--ui-icon:url("./search.svg")}
 .icon-x{--ui-icon:url("./x.svg")}
 .icon-bookmark-check{--ui-icon:url("./bookmark-check.svg")}
+.icon-book{--ui-icon:url("./book.svg")}
+.icon-circle-user{--ui-icon:url("./circle-user.svg")}

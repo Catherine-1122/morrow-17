@@ -11,6 +11,14 @@ A traveller asks what to see at the Finnish Pavilion. Atlas can research the que
 
 Travel planning often leaves the map pin in one app, the source in a search tab and the itinerary in someone’s notes. Atlas keeps those pieces together. This submission is a self-contained slice of the hackathon prototype built around three venues in Venice. [Watch the sample walkthrough](docs/WALKTHROUGH.md) · [Artwork and map credits](docs/CREDITS.md)
 
+## Start here
+
+- **View without setup:** [Open the animated sample walkthrough](docs/WALKTHROUGH.md). No account, installation or API key is needed to watch it.
+- **Try the interactive sample:** follow the local instructions below. Sample mode needs Node.js but no API key.
+- **Try live research:** the optional Live Meta mode requires a server-side Meta key. The recording demonstrates sample search, not live AI processing.
+
+The public app includes **Explore, Search, Saved, Book and Profile**. Profile introduces the three roles and includes a reduced-motion setting; it does not provide account registration or access to private workspaces. The hosted, share-link beta is still being prepared and is not available from this repository yet.
+
 ## Run the demo
 
 Use **Node.js 24 or newer** with npm. From the root of this checkout:
@@ -24,6 +32,7 @@ Open [Atlas on this computer](http://127.0.0.1:4173). There are zero third-party
 1. Open **Search**, leave **Sample · offline** selected and enter **Architecture in Venice**. In this mode, a deterministic search matches words against three public sample records. For a narrower example try **wind**.
 2. Open **Finnish Pavilion**, inspect the source or image credit, and save it. Add another venue from Explore.
 3. Open **Saved** and refresh. The places persist on this demo server. **Book** opens a digital pocket guide in save order. Open a page to read it, switch to **Map** and select its numbered pin, or unfold **Sketches**.
+4. Open **Profile** to see the role overview and accessibility preference.
 
 ## Try real Meta research
 

@@ -13,3 +13,7 @@ The recording shows:
 3. Opening the pocket guide, image credits, numbered map and Sketches view.
 
 The GIF repeats automatically. GitHub's MP4 file page does not display an inline player; use the download above to watch the full-resolution video in a video player. This recording makes no live Meta request. [Live integration details](INTEGRATION.md).
+
+## Interactive app sections
+
+The current app includes **Explore, Search, Saved, Book and Profile**. This earlier short recording covers only the sample search/save/guide journey; it is not a walkthrough of every section, the full prototype loading sequence, or live Meta processing. To try all five sections locally, follow the [README setup instructions](../README.md#run-the-demo).
