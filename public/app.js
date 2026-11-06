@@ -25,17 +25,21 @@ async function api(path, data) {
 
 const pages = {explore:'Explore',search:'Search',saved:'Saved',book:'Book',profile:'Profile'};
 const navigationIcons = {explore:'compass',search:'search',saved:'bookmark',book:'book',profile:'circle-user'};
-let places = [], byId = new Map(), saved = [], liveAvailable = false;
+let places = [], byId = new Map(), saved = [], researchByPlace = {}, liveAvailable = false;
 let reader, requestNumber = 0, question = 'Architecture in Venice', mode = 'sample', lastSearch;
 const current = () => Object.hasOwn(pages,location.hash.slice(1)) ? location.hash.slice(1) : 'explore';
 const status = text => { $('#status').textContent = text; };
 const osm = p => 'https://www.openstreetmap.org/?mlat='+p.coordinates[1]+'&mlon='+p.coordinates[0]+'#map=17/'+p.coordinates[1]+'/'+p.coordinates[0];
-function saveButton(place) {
+function saveButton(place, match) {
   const b = button('',async () => {
     b.disabled = true;
     try {
       const value = !saved.includes(place.id);
-      saved = (await api('/api/saved',{id:place.id,saved:value})).saved;
+      const data = {id:place.id, saved:value};
+      if (value && match?.proof) data.research = match;
+      const state = await api('/api/saved', data);
+      saved = state.saved;
+      researchByPlace = state.researchByPlace;
       status(value ? place.name+' saved.' : place.name+' removed from Saved.');
       document.querySelectorAll('[data-save]').forEach(node=>updateSave(node));
       if (current()==='saved') showBoard(saved.map(id=>byId.get(id)), $('#content'));
@@ -49,32 +53,39 @@ function updateSave(node) {
   node.setAttribute('aria-pressed',String(active)); node.setAttribute('aria-label',(active?'Remove ':'Save ')+name);
   node.replaceChildren(icon(active?'bookmark-check':'bookmark'));
 }
-function detail(p) {
+function appendResearch(parent, match) {
+  if (!match?.reason) return;
+  const note = el('p',null,'draft');
+  note.append(el('strong','Muse research'), el('br'), document.createTextNode(match.reason+' '), link('Source',match.source));
+  parent.append(note);
+}
+
+function detail(p, match) {
   const body=$('#detail-body');
   const image=el('img'); image.src=p.image; image.alt=p.name+' architectural illustration';
-  body.replaceChildren(image,el('h2',p.name),el('p',p.area+' · Venice','region'),el('p',p.description));
-  body.append(link('Official Biennale listing',p.source),document.createTextNode(' · '),link('View on map',osm(p)),saveButton(p));
+  const heading = el('h2',p.name);
+  heading.id = 'detail-title';
+  body.replaceChildren(image,heading,el('p',p.area+' · Venice','region'),el('p',p.description));
+  appendResearch(body, match);
+  body.append(link('Official Biennale listing',p.source),document.createTextNode(' · '),link('View on map',osm(p)),saveButton(p,match));
   appendIllustrationCredit(body,{credit:p.credit});
   $('#detail').showModal();
 }
 function card(p,match) {
   const article=el('article',null,'card');
-  const artwork=button('',()=>detail(p),'art');artwork.setAttribute('aria-label','Open '+p.name);
+  const artwork=button('',()=>detail(p,match),'art');artwork.setAttribute('aria-label','Open '+p.name);
   artwork.append(placeVisual({name:p.name,guide_image:p.image}));
   const body=el('div',null,'card-copy');
   body.append(el('h2',p.name),el('p',p.area+' · Venice','region'),el('p',p.description,'description'));
-  if (match?.reason) {
-    const research=el('p',null,'draft');
-    research.append(el('strong','Muse research'),el('br'),document.createTextNode(match.reason),document.createTextNode(' '),link('Source',match.source));body.append(research);
-  }
+  appendResearch(body, match);
   appendIllustrationCredit(body,{credit:p.credit});
   const actions=el('div',null,'actions');
-  const view=button('View place',()=>detail(p),'action');view.append(icon('arrow-right'));
-  actions.append(view,saveButton(p));body.append(actions);article.append(artwork,body);return article;
+  const view=button('View place',()=>detail(p,match),'action');view.append(icon('arrow-right'));
+  actions.append(view,saveButton(p,match));body.append(actions);article.append(artwork,body);return article;
 }
 function showBoard(items,host,matches=[]) {
   const grid=el('div',null,'board');
-  for (const p of items) grid.append(card(p,matches.find(m=>m.id===p.id)));
+  for (const p of items) grid.append(card(p,matches.find(m=>m.id===p.id) || (current()==='saved' ? researchByPlace[p.id] : null)));
   host.replaceChildren(items.length ? grid : el('p',current()==='saved'?'Save a place in Explore or Search to start your guide.':'No sample places match this question.'));
 }
 function searchView(host) {
@@ -109,7 +120,7 @@ function bookView(host) {
   if (!saved.length) {host.textContent='Save a venue to open your pocket guide.';return;}
   const trip={id:'venice',name:'Venice',places:saved};
   const placesForGuide=new Map(places.map(p=>[p.id,{...p,location_label:p.area,address:p.area,
-    category:'Venice Biennale',sources:[{url:p.source}],illustration:{url:p.image,credit:p.credit}}]));
+    research:researchByPlace[p.id],category:'Venice Biennale',sources:[{url:p.source}],illustration:{url:p.image,credit:p.credit}}]));
   const data=savedPlaceGuide(trip,placesForGuide);
   data.map={image:'/assets/guides/venice-map.webp',width:1760,height:500};
   for(const entry of data.entries) entry.map_point=byId.get(entry.place_id).point;
@@ -125,7 +136,7 @@ async function render() {
   for(const a of document.querySelectorAll('[data-section]')) if(a.hash==='#'+page)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');
   try {
     const state=await api('/api/state');if(version!==requestNumber)return;
-    saved=state.saved;liveAvailable=state.liveAvailable;
+    saved=state.saved;researchByPlace=state.researchByPlace;liveAvailable=state.liveAvailable;
     if(page==='explore')showBoard(places,host);
     else if(page==='saved')showBoard(saved.map(id=>byId.get(id)),host);
     else if(page==='book')bookView(host);

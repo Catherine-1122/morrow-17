@@ -5,15 +5,21 @@
 
 A traveller asks what to see at the Finnish Pavilion. Atlas can research the question with Meta, show the source beside the place, and let the traveller decide whether to save it. The saved venue becomes a page and a pin in their pocket guide.
 
-**[Download the Atlas walkthrough (MP4, 6:33 at 2× speed)](https://github.com/Catherine-1122/morrow-17/raw/refs/heads/main/docs/walkthrough.mp4)**
+Travel planning often leaves the map pin in one app, the source in a search tab and the itinerary in someone’s notes. Atlas keeps those pieces together.
 
-Travel planning often leaves the map pin in one app, the source in a search tab and the itinerary in someone’s notes. Atlas keeps those pieces together. This submission is a self-contained slice of the hackathon prototype built around three venues in Venice. [View the walkthrough](docs/WALKTHROUGH.md) · [Artwork and map credits](docs/CREDITS.md)
+## Run the Venice sample
 
-## Start here
+This checkout includes three illustrated venues. [Start the local app](#run-the-demo) to search, save a place, and open its guide page. Sample mode works without an API key. [Live Meta research](#try-real-meta-research) is optional.
 
-- **View without setup:** [Open the Atlas walkthrough](docs/WALKTHROUGH.md). No account, installation or API key is needed to watch it.
-- **Try the interactive sample:** follow the local instructions below. Sample mode needs Node.js but no API key.
-- **Try live research:** the optional Live Meta mode requires a server-side Meta key.
+![Venice sample. A traveler searches for wind, saves the Finnish Pavilion and opens its guide page from pin 1.](docs/venice-sample.gif)
+
+The 14-second preview follows a search for **wind** through saving the Finnish Pavilion and opening its page from pin **1**. Captured November 6, after submission.
+
+## Watch the full Atlas prototype
+
+[Download the full prototype video (MP4, 6:33, silent, 2× speed)](https://github.com/Catherine-1122/morrow-17/raw/refs/heads/main/docs/walkthrough.mp4) · [Scene timestamps](docs/WALKTHROUGH.md#full-atlas-prototype) · [Artwork and map credits](docs/CREDITS.md)
+
+The recording shows globe navigation and searches in Seattle and Los Angeles from the larger hackathon app. Run the Venice sample above to try the public implementation.
 
 The public app includes **Explore, Search, Saved, Book and Profile**. Profile introduces the three roles and includes a reduced-motion setting; it does not provide account registration or access to private workspaces. The hosted, share-link beta is still being prepared and is not available from this repository yet.
 
@@ -27,9 +33,9 @@ npm start
 
 Open [Atlas on this computer](http://127.0.0.1:4173). There are zero third-party runtime packages. Startup creates a local SQLite database in `.atlas/`. It begins empty, so you can see your first save become a guide. No account, API key, download of map tiles or production service is required for Sample mode. Official source links open external sites when clicked.
 
-1. Open **Search**, leave **Sample · offline** selected and enter **Architecture in Venice**. In this mode, a deterministic search matches words against three public sample records. For a narrower example try **wind**.
+1. Open **Search**, leave **Sample · offline** selected and enter **Architecture in Venice**. In this mode, the sample looks for all meaningful words across the venue name, area, tags and description. Try **Aeolian Suite** for one result or **glaciers in Venice** for none.
 2. Open **Finnish Pavilion**, inspect the source or image credit, and save it. Add another venue from Explore.
-3. Open **Saved** and refresh. The places persist on this demo server. **Book** opens a digital pocket guide in save order. Open a page to read it, switch to **Map** and select its numbered pin, or unfold **Sketches**.
+3. Open **Saved** and refresh. The places persist on this demo server. **Book** opens a digital pocket guide in save order. Select **Map** and open pin **1** to read the Finnish Pavilion page and its official source. The **Cover** is separate. Switch to **Sketches** to unfold the sketch pages.
 4. Open **Profile** to see the role overview and accessibility preference.
 
 ## Try real Meta research
@@ -57,7 +63,7 @@ flowchart LR
   H --> I[Illustrated guide and numbered map]
 ```
 
-Meta interprets the live question, chooses relevant candidates, researches the listings and drafts a short explanation. The server accepts only known place IDs with a native citation on the same result line pointing to the venue’s listed official page. This check establishes the source of a result; the traveller can inspect the underlying claim. The map positions, edition artwork and guide copy come from the bundled samples. Saving is an explicit human decision.
+Meta interprets the live question, chooses relevant candidates, researches the listings and drafts a short explanation. The server accepts only known place IDs with a native citation on the same result line pointing to the venue’s listed official page. This check establishes the source of a result; the traveller can inspect the underlying claim. Map positions, edition artwork and venue descriptions come from the bundled samples. Saving from a live result also stores its explanation and official source on the venue page. The shared demo database stores the saved explanation without the original search question.
 
 ## Three people shape Atlas
 
@@ -75,7 +81,7 @@ For this release we selected three venues, wrote short sample descriptions from 
 
 **Stack** · Node HTTP and built-in SQLite, browser ES modules, HTML and CSS, Hanken Grotesk, Lucide, a locally rendered Venice map and the Meta Responses API.
 
-**Verification** · Run `npm test` for independent, credential-free tests of startup, sample loading, genuine save/restart behavior, request validation and simulated provider failures. Run `npm run artwork:check` to match the shipped artwork to its recorded hashes and Meta attribution. The live check above is opt-in. [Scope and test evidence](docs/INTEGRATION.md)
+**Verification** · [GitHub checks](https://github.com/Catherine-1122/morrow-17/actions/workflows/checks.yml) run the Node 24 tests, illustration hashes and Chromium guide checks on pushes and pull requests. Run `npm test` and `npm run artwork:check` locally without installing packages. [Browser test instructions and evaluation scope](docs/INTEGRATION.md#reproduction) · [Search cases and expected results](test/fixtures/search-cases.json)
 
 **Current limits** · Discovery covers three mapped venues. Guide order follows save order; route optimization, offline downloads and printed orders are future work. The digital preview is interactive. Browser visitors to the same installation share its sample saves. The app binds to loopback for local judging; a public hosted instance requires a separately reviewed deployment.
 

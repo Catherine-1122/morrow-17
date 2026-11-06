@@ -12,12 +12,20 @@ export function validateQuery(value) {
   return value.trim();
 }
 
+const commonWords = new Set(
+  'a an and are at by can do does find for in is it me of on please see show sites the to what where which would i like'.split(' ')
+);
+
+function terms(text) {
+  return text.toLowerCase().match(/[\p{L}\p{N}]+/gu) || [];
+}
+
 export function sampleSearch(question, places) {
-  const words = validateQuery(question).toLowerCase().match(/[a-z0-9]+/g) || [];
+  const interests = terms(validateQuery(question)).filter(word => !commonWords.has(word));
   const matches = places.filter(place => {
-    const vocabulary = [place.id, place.name, place.area, place.city, ...place.tags]
-      .join(' ').toLowerCase().match(/[a-z0-9]+/g);
-    return words.some(word => vocabulary.includes(word));
+    const fields = [place.id, place.name, place.area, place.city, place.description, ...place.tags];
+    const vocabulary = new Set(terms(fields.join(' ')));
+    return interests.length > 0 && interests.every(word => vocabulary.has(word));
   });
   return {mode: 'sample', matches: matches.map(({id}) => ({id}))};
 }

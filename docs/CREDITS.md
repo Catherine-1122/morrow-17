@@ -1,10 +1,10 @@
 # Credits and licenses
 
-These notices cover the named assets and their appearances in the screenshot and walkthrough. Hado Labs retains its rights in its original application code and brand. Third-party license terms continue to apply to their respective files.
+These notices cover the named assets and their appearances in the Explore screenshot and Venice sample preview. Hado Labs retains its rights in its original application code and brand. Third-party license terms continue to apply to their respective files.
 
 ## Venice illustrations
 
-All three current illustrations were generated on **November 5, 2026 with Meta Muse Image (`muse-image-1.0`, `POST https://api.meta.ai/v1/images/edits`)**, using the licensed photographs below as the sole image inputs. They replace the original submission artwork. [Dated correction](ARTWORK-CORRECTION.md) · [Generation records and asset hashes](artwork-provenance.json). The Explore screenshot and walkthrough were recaptured with these replacements.
+All three current illustrations were generated on **November 5, 2026 with Meta Muse Image (`muse-image-1.0`, `POST https://api.meta.ai/v1/images/edits`)**, using the licensed photographs below as the sole image inputs. They replace the original submission artwork. [Dated correction](ARTWORK-CORRECTION.md) · [Generation records and asset hashes](artwork-provenance.json). The November 5 Explore screenshot and November 6 Venice sample preview both show these replacements. The full prototype video shows a broader collection.
 
 The named photographers created the reference photos, not the generated drawings. Their photos guided these individual requests; Atlas did not train or fine-tune a model on them. These credits do not establish whether their work appeared in Meta's original training data, and do not imply endorsement or compensation. The adaptations retain the licenses below.
 

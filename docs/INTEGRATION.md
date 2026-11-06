@@ -4,10 +4,10 @@
 | --- | --- | --- |
 | Natural-language discovery | Optional real Muse Spark web research in a fixed Venice scope. | Map-scoped discovery, cited responses and candidate matching in the full application. |
 | Source checks | Accept known ID + matching official page + native citation range on the result line. Render all prose as text. | Additional editorial checks and holds. Private implementation. |
-| Descriptions | Live result explanations carry their citation. Saved guides use the fixed public descriptions. | Cited research and structuring of editorial drafts. |
+| Descriptions | Every saved venue has its bundled description and official link. Saving from a live result also keeps the cited explanation on its guide page. | Cited research and structuring of editorial drafts. |
 | Illustrations | Three Meta Muse Image illustrations regenerated on Nov 5, with accessible credits and file-level provenance. Served as bundled assets; no live image generation in this public app. | Meta generates draft illustrations behind an Editor review step. |
 | Persistence | SQLite saves are shared on this local demo server. | Shared demo collection and separate private profiles. |
-| Guides | Saved venues appear in save order in Cover, Guide, Map and Sketches. | Pocket guide with a larger research library. |
+| Guides | The cover is separate. Each saved venue has a numbered guide page and a matching map pin. | Pocket guide with a larger research library. |
 
 ## Actual calls
 
@@ -27,10 +27,13 @@ All routes above refer to the Meta API host `https://api.meta.ai`. The live adap
 ## Reproduction
 
 - `npm start` starts the server using bundled public assets. No package installation or private path is required.
-- `npm test` runs deterministic fixtures and starts a real loopback server on an ephemeral port. It checks that known art loads, invalid IDs and foreign origins are rejected, saves are idempotent and a second server process lifecycle against the same database retains the place.
+- `npm test` runs the server and search checks without credentials. They cover save order, older SQLite databases, restart persistence, tampered research, and [positive and negative search cases](../test/fixtures/search-cases.json).
+- To run the browser checks, use `npm ci`, `npx playwright install chromium`, and `npm run test:browser`. On Linux, `npx playwright install --with-deps chromium` also installs system libraries. Both browser tests use temporary databases. One follows offline search through refresh and pin 1. The other uses a simulated Meta response to verify that the saved explanation survives that journey. The GitHub workflow runs both on Node 24.
+- `npm run meta:eval` is an optional quality evaluation that uses your configured key for up to three billable searches. It compares the returned venues with the published answer key and checks for the exhibition name in the positive case. A correct official URL can still accompany an unsupported sentence. The CI fixtures exercise this distinction. A human reader can inspect the listing to assess the rest of the prose.
 - `npm run artwork:check` verifies that every bundled illustration has a Meta generation record whose published-file hash matches the actual asset. This detects missing records and stale or substituted assets; it is not independent provider attestation.
 - `npm run meta:check` sends one billable live text request. It exits unsuccessfully for missing credentials, model failure, empty results or insufficient source evidence. A tested output is bundled solely as evidence; it is never replayed by Live Meta.
-- The [walkthrough preview and MP4 download](WALKTHROUGH.md) and [Explore screenshot](explore.webp) were recaptured on Nov 5 from the corrected sample app. The walkthrough shows Sample search, the place sheet, saving, reopening the collection, and the digital guide and map. It makes no live model call. The animated GIF is an encoding of the same recording for playback on GitHub.
+- The [14-second Venice preview](WALKTHROUGH.md#public-venice-sample) shows the November 6 guide flow. The [Explore screenshot](explore.webp) shows the November 5 artwork correction. The separate [6:33 full prototype video](WALKTHROUGH.md#full-atlas-prototype) shows globe navigation and multi-city search. The Venice preview used offline Sample mode.
+- The local server signs each cited live match. On Save it checks the venue, explanation and source before storing them. Visitors to the installation share saved explanations. Search questions and credentials are omitted from the save record. Removing a venue removes its saved explanation.
 - To start with another empty collection, use another checkout. All state for the current installation lives beneath `.atlas/`, outside the files served to browsers.
 
 ## Boundary for judges

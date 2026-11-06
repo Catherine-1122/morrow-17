@@ -1,4 +1,5 @@
 import http from 'node:http';
+import {createHmac, randomBytes, timingSafeEqual} from 'node:crypto';
 import {DatabaseSync} from 'node:sqlite';
 import {mkdir, readFile, readdir} from 'node:fs/promises';
 import {dirname, join, relative, extname} from 'node:path';
@@ -43,7 +44,29 @@ export async function createApp({stateDir=join(root,'.atlas'),key='',fetchImpl=f
   await mkdir(stateDir,{recursive:true,mode:0o700});
   const db = new DatabaseSync(join(stateDir,'saved.sqlite'));
   db.exec('CREATE TABLE IF NOT EXISTS saves (position INTEGER PRIMARY KEY, place_id TEXT NOT NULL UNIQUE)');
-  const saved = () => db.prepare('SELECT place_id FROM saves ORDER BY position').all().map(row=>row.place_id);
+  db.exec('BEGIN IMMEDIATE');
+  try {
+    if (!db.prepare('PRAGMA table_info(saves)').all().some(column => column.name === 'research')) {
+      db.exec('ALTER TABLE saves ADD COLUMN research TEXT');
+    }
+    db.exec('COMMIT');
+  } catch (error) {
+    db.exec('ROLLBACK');
+    db.close();
+    throw error;
+  }
+  const readSaves = () => {
+    const rows = db.prepare('SELECT place_id, research FROM saves ORDER BY position').all();
+    return {
+      saved: rows.map(row => row.place_id),
+      researchByPlace: Object.fromEntries(rows.filter(row => row.research)
+        .map(row => [row.place_id, JSON.parse(row.research)]))
+    };
+  };
+  // Only explanations returned by the live adapter can be saved as Muse research.
+  const signingKey = randomBytes(32);
+  const signMatch = ({id, reason, source}) => createHmac('sha256', signingKey)
+    .update(JSON.stringify(['atlas-saved-research-v1', id, reason, source])).digest('hex');
   let lastLive = 0, researching = false;
   const server = http.createServer(async (req,res) => {
     try {
@@ -55,7 +78,7 @@ export async function createApp({stateDir=join(root,'.atlas'),key='',fetchImpl=f
       if (![ '127.0.0.1:'+port,'localhost:'+port ].includes(host)) throw new SearchError('Invalid host.',403);
       const path = new URL(req.url,'http://'+host).pathname;
       if (req.method === 'GET') {
-        if (path === '/api/state') return send(res,200,{saved:saved(),liveAvailable:Boolean(key)});
+        if (path === '/api/state') return send(res,200,{...readSaves(),liveAvailable:Boolean(key)});
         const file = files.get(path);
         if (!file) throw new SearchError('Page unavailable.',404);
         const bytes = await readFile(file);
@@ -69,9 +92,25 @@ export async function createApp({stateDir=join(root,'.atlas'),key='',fetchImpl=f
       const data = await readBody(req);
       if (path === '/api/saved') {
         if (!placeIds.has(data.id) || typeof data.saved !== 'boolean') throw new SearchError('Unknown place or save action.',400);
-        if (data.saved) db.prepare('INSERT OR IGNORE INTO saves(place_id) VALUES(?)').run(data.id);
-        else db.prepare('DELETE FROM saves WHERE place_id=?').run(data.id);
-        return send(res,200,{saved:saved()});
+        if (data.saved) {
+          let research = null;
+          if (data.research != null) {
+            const {reason, source, proof} = data.research;
+            const official = places.find(place => place.id === data.id).source;
+            if (!key || typeof reason !== 'string' || !reason || reason.length > 650 || source !== official ||
+                typeof proof !== 'string' || !/^[a-f0-9]{64}$/.test(proof) ||
+                !timingSafeEqual(Buffer.from(proof, 'hex'), Buffer.from(signMatch({id:data.id, reason, source}), 'hex'))) {
+              throw new SearchError('Run the live search again before saving its explanation.', 400);
+            }
+            research = JSON.stringify({reason, source});
+          }
+          db.prepare(`INSERT INTO saves(place_id, research) VALUES(?, ?)
+            ON CONFLICT(place_id) DO UPDATE SET research = COALESCE(saves.research, excluded.research)`)
+            .run(data.id, research);
+        } else {
+          db.prepare('DELETE FROM saves WHERE place_id=?').run(data.id);
+        }
+        return send(res,200,readSaves());
       }
       if (path !== '/api/search') throw new SearchError('Page unavailable.',404);
       const question = validateQuery(data.question);
@@ -81,7 +120,10 @@ export async function createApp({stateDir=join(root,'.atlas'),key='',fetchImpl=f
       if (researching || Date.now()-lastLive < 5000) throw new SearchError('A recent Meta request is still settling. Try again shortly.',429);
       researching = true;
       lastLive = Date.now();
-      try { return send(res,200,await liveSearch(question,places,{key,fetchImpl})); }
+      try {
+        const result = await liveSearch(question,places,{key,fetchImpl});
+        return send(res,200,{...result, matches:result.matches.map(match => ({...match, proof:signMatch(match)}))});
+      }
       finally { researching = false; }
     } catch (error) {
       if (!res.headersSent) send(res,error.status || 500,{error:error instanceof SearchError ? error.message : 'The local app could not complete this request.'});

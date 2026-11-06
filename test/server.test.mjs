@@ -1,10 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,rm} from 'node:fs/promises';
+import {mkdtemp,rm,readFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
+import {DatabaseSync} from 'node:sqlite';
+import {citedAnswer} from './support/meta.mjs';
 import {createApp} from '../server.mjs';
-const start=async dir=>{const srv=await createApp({stateDir:dir});await new Promise(ok=>srv.listen(0,'127.0.0.1',ok));return {srv,base:'http://127.0.0.1:'+srv.address().port};};
+const start=async (dir, options={})=>{const srv=await createApp({stateDir:dir,...options});await new Promise(ok=>srv.listen(0,'127.0.0.1',ok));return {srv,base:'http://127.0.0.1:'+srv.address().port};};
 const stop=srv=>new Promise(done=>srv.close(done));
 test('a clean install serves the app and public assets, persists a saved selection across restart and rejects unsafe requests',async t=>{
   const dir=await mkdtemp(join(tmpdir(),'atlas-test-'));let {srv,base}=await start(dir);
@@ -19,5 +21,38 @@ test('a clean install serves the app and public assets, persists a saved selecti
   assert.equal((await post('/api/saved',{id:'finland',saved:true},'https://example.org')).status,403);
   assert.equal((await post('/api/saved',{id:'invented',saved:true})).status,400);
   for(let i=0;i<2;i++)assert.deepEqual((await (await post('/api/saved',{id:'finland',saved:true})).json()).saved,['finland']);
-  await stop(srv);({srv,base}=await start(dir));assert.deepEqual(await (await fetch(base+'/api/state')).json(),{saved:['finland'],liveAvailable:false});
+  await stop(srv);({srv,base}=await start(dir));assert.deepEqual(await (await fetch(base+'/api/state')).json(),{saved:['finland'],researchByPlace:{},liveAvailable:false});
+});
+
+test('older saves survive migration and only the issued venue explanation can be persisted', async t => {
+  const dir = await mkdtemp(join(tmpdir(), 'atlas-migration-'));
+  const old = new DatabaseSync(join(dir, 'saved.sqlite'));
+  old.exec("CREATE TABLE saves (position INTEGER PRIMARY KEY, place_id TEXT NOT NULL UNIQUE); INSERT INTO saves(place_id) VALUES('arsenale')");
+  old.close();
+  const places = JSON.parse(await readFile(new URL('../public/places.json', import.meta.url)));
+  const finland = places.find(place => place.id === 'finland');
+  const reason = 'See Aeolian Suite in the Finnish Pavilion.';
+  const fetchImpl = async () => Response.json(citedAnswer(finland, reason));
+  let {srv, base} = await start(dir, {key:'unit-fixture', fetchImpl});
+  t.after(async () => { await stop(srv); await rm(dir,{recursive:true,force:true}); });
+  const post = (path, data) => fetch(base + path, {method:'POST',
+    headers:{Origin:base,'Content-Type':'application/json'},body:JSON.stringify(data)});
+  const state = async () => (await fetch(base+'/api/state')).json();
+  const save = (id, research) => post('/api/saved', {id, saved:true, research});
+  assert.deepEqual((await state()).saved, ['arsenale']);
+  const result = await (await post('/api/search', {question:'wind',mode:'live'})).json();
+  const [match] = result.matches;
+  assert.equal((await save('finland', {...match, reason:'Forged explanation.'})).status, 400);
+  assert.equal((await save('olivetti', match)).status, 400);
+  assert.deepEqual((await state()).saved, ['arsenale']);
+  assert.equal((await save('finland', match)).status, 200);
+  assert.equal((await save('finland')).status, 200);
+  await stop(srv);
+  ({srv, base} = await start(dir));
+  const restored = await state();
+  assert.deepEqual(restored.saved, ['arsenale','finland']);
+  assert.deepEqual(restored.researchByPlace, {finland:{reason,source:finland.source}});
+  await post('/api/saved',{id:'finland',saved:false});
+  await save('finland');
+  assert.deepEqual((await state()).researchByPlace, {});
 });

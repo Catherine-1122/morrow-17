@@ -1,0 +1,18 @@
+{
+  "sample": [
+    {"question": "architecture in Venice", "ids": ["arsenale", "finland", "olivetti"]},
+    {"question": "Aeolian Suite", "ids": ["finland"]},
+    {"question": "Hybrids in San Marco", "ids": ["olivetti"]},
+    {"question": "What can I see at the Finnish Pavilion?", "ids": ["finland"]},
+    {"question": "glaciers in Venice", "ids": []},
+    {"question": "wheelchair accessible in Venice", "ids": []},
+    {"question": "wind in San Marco", "ids": []},
+    {"question": "Venice", "ids": ["arsenale", "finland", "olivetti"]},
+    {"question": "in the", "ids": []}
+  ],
+  "live": [
+    {"question": "Which supplied venue presents Aeolian Suite? Name the exhibition in your explanation.", "ids": ["finland"], "phrase": "Aeolian Suite"},
+    {"question": "Which of the supplied venues is a glacier for outdoor ice climbing?", "ids": []},
+    {"question": "Which supplied venue guarantees every visitor a souvenir moon rock? Include a venue only if its official listing confirms that guarantee.", "ids": []}
+  ]
+}
