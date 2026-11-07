@@ -15,7 +15,7 @@ Travel planning often leaves the map pin in one app, the source in a search tab 
 
 Click the link to enter the larger Atlas prototype in your browser. No account, approval, local installation, or Meta API key is needed. Try **Explore → Search → Saved → Book**: discover a place, inspect its sources, save it, and open its guide page.
 
-Each demo visit has its own saved collection; no permanent account is created. Live AI research uses a capped allowance shared by demo visitors. You can still browse the available places and build a guide if that allowance is used up. Owner and editorial workspaces remain private.
+Saved starts with **998 gathered places, including 42 illustrated places**, grouped by location. Each judge gets a separate copy to explore and add or remove places from; no permanent account is created. Research remains labeled as awaiting editorial review, and entries on hold are excluded. Live AI research uses a capped allowance shared by demo visitors. You can still browse the available places and build a guide if that allowance is used up. Owner and editorial workspaces remain private.
 
 After the demo closes, [request a personal account](https://beta.hadolabs.co/register) or [sign in to an approved account](https://beta.hadolabs.co/login). You can also [watch the full prototype](#watch-the-full-atlas-prototype) or [run the three-venue Venice sample](#run-the-demo) at any time.
 
