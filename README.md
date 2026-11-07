@@ -7,6 +7,18 @@ A traveller asks what to see at the Finnish Pavilion. Atlas can research the que
 
 Travel planning often leaves the map pin in one app, the source in a search tab and the itinerary in someone’s notes. Atlas keeps those pieces together.
 
+## Judge access · hosted beta
+
+**[Open the Atlas beta](https://beta.hadolabs.co/login)** · [Request access](https://beta.hadolabs.co/register) · [Beta privacy](https://beta.hadolabs.co/privacy)
+
+The hosted beta opens the larger Atlas prototype in your browser; no local installation or Meta API key is needed. Sign in with Google or request an account with email and password. New personal accounts need Catherine’s approval before entering the app. The beta does not send approval emails yet—return to the account page to check your status.
+
+Once approved, try **Explore → Search → Saved → Book**: discover a place, inspect its sources, save it, and open its guide page. Personal accounts retain saved places between sign-ins. Live AI research uses the beta’s limited shared allowance; availability may vary.
+
+For immediate review while access is pending, [watch the full prototype](#watch-the-full-atlas-prototype) or [run the three-venue Venice sample](#run-the-demo). The hosted app and private editorial workspaces are separate from this public sample.
+
+*Hosted beta access added November 6, 2026, after the hackathon submission.*
+
 ## Run the Venice sample
 
 This checkout includes three illustrated venues. [Start the local app](#run-the-demo) to search, save a place, and open its guide page. Sample mode works without an API key. [Live Meta research](#try-real-meta-research) is optional.
@@ -21,7 +33,7 @@ The 14-second preview follows a search for **wind** through saving the Finnish P
 
 The recording shows globe navigation and searches in Seattle and Los Angeles from the larger hackathon app. Run the Venice sample above to try the public implementation.
 
-The public app includes **Explore, Search, Saved, Book and Profile**. Profile introduces the three roles and includes a reduced-motion setting; it does not provide account registration or access to private workspaces. The hosted, share-link beta is still being prepared and is not available from this repository yet.
+The public sample includes **Explore, Search, Saved, Book and Profile**. Its Profile introduces the three roles and includes a reduced-motion setting; it does not provide account registration or access to private workspaces. For the separately hosted full prototype, use [Judge access](#judge-access--hosted-beta) above.
 
 ## Run the demo
 
@@ -83,6 +95,6 @@ For this release we selected three venues, wrote short sample descriptions from 
 
 **Verification** · [GitHub checks](https://github.com/Catherine-1122/morrow-17/actions/workflows/checks.yml) run the Node 24 tests, illustration hashes and Chromium guide checks on pushes and pull requests. Run `npm test` and `npm run artwork:check` locally without installing packages. [Browser test instructions and evaluation scope](docs/INTEGRATION.md#reproduction) · [Search cases and expected results](test/fixtures/search-cases.json)
 
-**Current limits** · Discovery covers three mapped venues. Guide order follows save order; route optimization, offline downloads and printed orders are future work. The digital preview is interactive. Browser visitors to the same installation share its sample saves. The app binds to loopback for local judging; a public hosted instance requires a separately reviewed deployment.
+**Public sample limits** · Discovery covers three mapped venues. Guide order follows save order; route optimization, offline downloads and printed orders are future work. The digital preview is interactive. Browser visitors to the same installation share its sample saves. This sample binds to loopback for local judging. The [hosted beta](#judge-access--hosted-beta) is a separate deployment with account approval and limited AI usage.
 
 **Rights** · The repository includes no general open-source license for Hado Labs’ original code or brand. The contributed illustrations, font, icons and map carry the notices in [credits and licenses](docs/CREDITS.md).
