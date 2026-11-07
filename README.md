@@ -9,13 +9,15 @@ Travel planning often leaves the map pin in one app, the source in a search tab 
 
 ## Judge access · hosted beta
 
-**[Open the Atlas beta](https://beta.hadolabs.co/login)** · [Request access](https://beta.hadolabs.co/register) · [Beta privacy](https://beta.hadolabs.co/privacy)
+**[Open the judge demo — no sign-in required](https://beta.hadolabs.co/judges)** · [Beta privacy](https://beta.hadolabs.co/privacy)
 
-The hosted beta opens the larger Atlas prototype in your browser; no local installation or Meta API key is needed. Sign in with Google or request an account with email and password. New personal accounts need Catherine’s approval before entering the app. The beta does not send approval emails yet—return to the account page to check your status.
+**Temporary public access ends at 12:00 a.m. Monday, November 9, 2026, Pacific Standard Time (Seattle)—the start of Monday.** The link and all existing judge-demo sessions expire automatically at that time.
 
-Once approved, try **Explore → Search → Saved → Book**: discover a place, inspect its sources, save it, and open its guide page. Personal accounts retain saved places between sign-ins. Live AI research uses the beta’s limited shared allowance; availability may vary.
+Click the link to enter the larger Atlas prototype in your browser. No account, approval, local installation, or Meta API key is needed. Try **Explore → Search → Saved → Book**: discover a place, inspect its sources, save it, and open its guide page.
 
-For immediate review while access is pending, [watch the full prototype](#watch-the-full-atlas-prototype) or [run the three-venue Venice sample](#run-the-demo). The hosted app and private editorial workspaces are separate from this public sample.
+Each demo visit has its own saved collection; no permanent account is created. Live AI research uses a capped allowance shared by demo visitors. You can still browse the available places and build a guide if that allowance is used up. Owner and editorial workspaces remain private.
+
+After the demo closes, [request a personal account](https://beta.hadolabs.co/register) or [sign in to an approved account](https://beta.hadolabs.co/login). You can also [watch the full prototype](#watch-the-full-atlas-prototype) or [run the three-venue Venice sample](#run-the-demo) at any time.
 
 *Hosted beta access added November 6, 2026, after the hackathon submission.*
 
@@ -95,6 +97,6 @@ For this release we selected three venues, wrote short sample descriptions from 
 
 **Verification** · [GitHub checks](https://github.com/Catherine-1122/morrow-17/actions/workflows/checks.yml) run the Node 24 tests, illustration hashes and Chromium guide checks on pushes and pull requests. Run `npm test` and `npm run artwork:check` locally without installing packages. [Browser test instructions and evaluation scope](docs/INTEGRATION.md#reproduction) · [Search cases and expected results](test/fixtures/search-cases.json)
 
-**Public sample limits** · Discovery covers three mapped venues. Guide order follows save order; route optimization, offline downloads and printed orders are future work. The digital preview is interactive. Browser visitors to the same installation share its sample saves. This sample binds to loopback for local judging. The [hosted beta](#judge-access--hosted-beta) is a separate deployment with account approval and limited AI usage.
+**Public sample limits** · Discovery covers three mapped venues. Guide order follows save order; route optimization, offline downloads and printed orders are future work. The digital preview is interactive. Browser visitors to the same installation share its sample saves. This sample binds to loopback for local judging. The [hosted beta](#judge-access--hosted-beta) is a separate deployment with temporary judge access, approved personal accounts, and limited AI usage.
 
 **Rights** · The repository includes no general open-source license for Hado Labs’ original code or brand. The contributed illustrations, font, icons and map carry the notices in [credits and licenses](docs/CREDITS.md).
